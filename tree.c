@@ -3,7 +3,7 @@ typedef struct tree tree;
 struct tree
 {
     int value;
-    tree *left,*right;
+    tree *left,*right,*parent;
 };
 tree *root=NULL;
 tree *copy;
@@ -62,6 +62,7 @@ void insert(int value)
         root=(tree *)malloc(sizeof(tree));
         root->value=value;
         root->left=root->right=NULL;
+        root->parent=NULL;
         copy=root;
     }
     else
@@ -78,6 +79,7 @@ void insert(int value)
                 copy->left=(tree *)malloc(sizeof(tree));
                 copy->left->value=value;
                 copy->left->left=copy->left->right=NULL;
+                copy->left->parent=copy;
             }
             else
             {
@@ -92,6 +94,7 @@ void insert(int value)
                 copy->right=(tree *)malloc(sizeof(tree));
                 copy->right->value=value;
                 copy->right->left=copy->right->right=NULL;
+                copy->right->parent=copy;
             }
             else
             {
