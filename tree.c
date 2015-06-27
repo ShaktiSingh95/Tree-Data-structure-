@@ -9,7 +9,6 @@ tree *root=NULL;
 tree *copy;
 int main()
 {
-    int *errorcode;
     int n,flag=1,value,error=-1;
     while(flag)
     {
@@ -26,11 +25,6 @@ int main()
             printf("\t   Enter the value o be inserted.");
             scanf("%d",&value);
             insert(value);
-            if(error==-1)
-            {
-                printf("\tThe value you are trying to insert is already present.");
-                break;
-            }
             printf("\t\tInsertion Successful!");
             break;
         case 2:
@@ -44,7 +38,7 @@ int main()
             }
             else if(error=1)
             {
-                printf("\t   Yes,%d is pressent in the tree.",value);
+                printf("\t   Yes,%d is present in the tree.",value);
             }
             break;
         case 0:
@@ -69,8 +63,8 @@ void insert(int value)
     {
         if(value==copy->value)
         {
-               printf("\n\tSorry! the value you are trying to insert is already present.");
-                exit(0);
+            printf("\tThe value you are trying to insert is already present.");
+            exit(0);
         }
         if(value<copy->value)
         {
