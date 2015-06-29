@@ -2,11 +2,12 @@
 typedef struct tree tree;
 struct tree
 {
-    int value;
+    int value,height;
     tree *left,*right,*parent;
 };
 tree *root=NULL;
 tree *copy;
+int p=0;
 int main()
 {
     int n,flag=1,value,error=-1;
@@ -25,6 +26,8 @@ int main()
             printf("\t   Enter the value o be inserted.");
             scanf("%d",&value);
             insert(value);
+            p=0;
+            copy=root;
             printf("\t\tInsertion Successful!");
             break;
         case 2:
@@ -42,7 +45,8 @@ int main()
             }
             break;
         case 0:
-            flag=0;break;
+            flag=0;
+            break;
         default :
             printf("\n\t\tInvalid entry!retry");
         }
@@ -57,6 +61,7 @@ void insert(int value)
         root->value=value;
         root->left=root->right=NULL;
         root->parent=NULL;
+        root->height=1;
         copy=root;
     }
     else
@@ -68,12 +73,19 @@ void insert(int value)
         }
         if(value<copy->value)
         {
+
             if(copy->left==NULL)
             {
                 copy->left=(tree *)malloc(sizeof(tree));
                 copy->left->value=value;
                 copy->left->left=copy->left->right=NULL;
                 copy->left->parent=copy;
+                if(copy->right==NULL)
+                {
+                    p=1;
+                }
+                copy=copy->left;
+                copy->height=1;
             }
             else
             {
@@ -89,6 +101,12 @@ void insert(int value)
                 copy->right->value=value;
                 copy->right->left=copy->right->right=NULL;
                 copy->right->parent=copy;
+                if(copy->left==NULL)
+                {
+                    p=1;
+                }
+                copy=copy->right;
+                copy->height=1;
             }
             else
             {
@@ -97,7 +115,18 @@ void insert(int value)
             }
         }
     }
-    copy=root;
+    if(p==1)
+    {
+        updateHeight();
+    }
+    if(copy->parent!=NULL)
+    {
+        copy=copy->parent;
+    }
+}
+void updateHeight()
+{
+    copy->parent->height=copy->height+1;
 }
 int search(int value)
 {
@@ -109,6 +138,7 @@ int search(int value)
     {
         if(value==copy->value)
         {
+            printf("at height %d is present element:",copy->height);
             return 1;
         }
         else if(value<copy->value)
